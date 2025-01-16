@@ -10,7 +10,7 @@ class CheckListItem extends Model
         'id'
     ];
 
-    public function checklist()
+    public function checklists()
     {
         return $this->belongsTo(Checklist::class);
     }

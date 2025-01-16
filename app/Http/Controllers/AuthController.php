@@ -45,8 +45,8 @@ class AuthController extends Controller implements HasMiddleware
     public function register()
     {
         $validator = Validator::make(request()->all(), [
-            'name'      => 'required',
             'username'  => 'required',
+            'email'     => 'required|email',
             'password'  => 'required'
         ]);
 
@@ -55,15 +55,15 @@ class AuthController extends Controller implements HasMiddleware
         }
 
         $user = User::create([
-            'name'      => request('name'),
             'username'  => request('username'),
+            'email'     => request('email'),
             'password'  => Hash::make(request('password')),
         ]);
 
-        if($user){
-            response()->json(['message' => 'pendaftaran berhasil']);
+        if(!$user){
+            return response()->json(['message' => 'pendaftaran gagal']);
         } else {
-            response()->json(['message' => 'pendaftaran gagal']);
+            return response()->json(['message' => 'pendaftaran berhasil']);
         }
     }
 
