@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Checklist;
-use App\Models\ChecklistItem;
+use App\Models\CheckList;
+use App\Models\CheckListItem;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +22,7 @@ class ChecklistItemController extends Controller implements HasMiddleware
     public function detailChecklist($id)
     {
         // cek user_id
-        $checklistItem = ChecklistItem::where('check_list_id', $id);
+        $checklistItem = CheckListItem::where('check_list_id', $id);
 
         // jika kosong
         if (!$checklistItem->first()) {
@@ -30,12 +30,12 @@ class ChecklistItemController extends Controller implements HasMiddleware
                 'message' => 'data tidak ditemukan'
             ]);
         } else {
-            $checklist = Checklist::where('id', $id)->select('user_id')->get();
+            $checklist = CheckList::where('id', $id)->select('user_id')->get();
             $getUserId = $checklist[0]->user_id;
     
             // jika data dimiliki user
             if ($getUserId == Auth::user()->id){
-                $getItem = ChecklistItem::where('check_list_id', $id)->get();
+                $getItem = CheckListItem::where('check_list_id', $id)->get();
                 return response()->json([
                     $getItem
                 ]);
@@ -50,7 +50,7 @@ class ChecklistItemController extends Controller implements HasMiddleware
     public function createChecklistItem($id)
     {
         // cek user_id
-        $checklist = Checklist::where('id', $id)->first();
+        $checklist = CheckList::where('id', $id)->first();
         
         // jika kosong
         if (!$checklist) {
@@ -71,7 +71,7 @@ class ChecklistItemController extends Controller implements HasMiddleware
                     return response()->json($validator->messages());
                 }
     
-                $createItem = ChecklistItem::create([
+                $createItem = CheckListItem::create([
                     'itemName'      => request('itemName'),
                     'check_list_id' => $id,
                     'status'        => 0
@@ -91,7 +91,7 @@ class ChecklistItemController extends Controller implements HasMiddleware
     public function getChecklistItem($id, $itemId)
     {
         // cek user_id
-        $checklistItem = ChecklistItem::where('id', $itemId)->first();
+        $checklistItem = CheckListItem::where('id', $itemId)->first();
 
         // jika kosong
         if (!$checklistItem) {
@@ -100,12 +100,12 @@ class ChecklistItemController extends Controller implements HasMiddleware
             ]);
         } else {
             $getIdItem = $checklistItem->check_list_id;
-            $checklist = Checklist::where('id', $getIdItem)->select('user_id')->get();
+            $checklist = CheckList::where('id', $getIdItem)->select('user_id')->get();
     
             // jika data dimiliki user
             if ($checklist[0]->user_id == Auth::user()->id){
                 // get
-                $getItem = ChecklistItem::where('id', $itemId)->get();
+                $getItem = CheckListItem::where('id', $itemId)->get();
     
                 return response()->json([
                     $getItem
@@ -121,7 +121,7 @@ class ChecklistItemController extends Controller implements HasMiddleware
     public function updateStatusChecklistItem($id, $itemId)
     {
         // cek user_id
-        $checklistItem = ChecklistItem::where('id', $itemId)->first();
+        $checklistItem = CheckListItem::where('id', $itemId)->first();
 
         // jika kosong
         if (!$checklistItem) {
@@ -130,12 +130,12 @@ class ChecklistItemController extends Controller implements HasMiddleware
             ]);
         } else {
             $getIdItem = $checklistItem->check_list_id;
-            $checklist = Checklist::where('id', $getIdItem)->select('user_id')->get();
+            $checklist = CheckList::where('id', $getIdItem)->select('user_id')->get();
     
             // jika data dimiliki user
             if ($checklist[0]->user_id == Auth::user()->id){
                 // update
-                $getItem = ChecklistItem::find($itemId)->update([
+                $getItem = CheckListItem::find($itemId)->update([
                     'status' => 1
                 ]);
     
@@ -154,7 +154,7 @@ class ChecklistItemController extends Controller implements HasMiddleware
     public function deleteChecklistItem($id, $itemId)
     {
         // cek user_id
-        $checklistItem = ChecklistItem::where('id', $itemId)->first();
+        $checklistItem = CheckListItem::where('id', $itemId)->first();
 
         // jika kosong
         if (!$checklistItem) {
@@ -164,12 +164,12 @@ class ChecklistItemController extends Controller implements HasMiddleware
         } else {
             // get user_id
             $getIdItem = $checklistItem->check_list_id;
-            $checklist = Checklist::where('id', $getIdItem)->select('user_id')->get();
+            $checklist = CheckList::where('id', $getIdItem)->select('user_id')->get();
 
             // jika data dimiliki user
             if ($checklist[0]->user_id == Auth::user()->id){
                 // delete
-                ChecklistItem::destroy($itemId);
+                CheckListItem::destroy($itemId);
 
                 return response()->json([
                     'message' => 'item berhasil dihapus'
@@ -185,7 +185,7 @@ class ChecklistItemController extends Controller implements HasMiddleware
     public function renameChecklistItem(Request $request, $id, $itemId)
     {
         //cek user_id
-        $checklistItem = ChecklistItem::where('id', $itemId)->first();
+        $checklistItem = CheckListItem::where('id', $itemId)->first();
 
         // jika kosong
         if (!$checklistItem) {
@@ -194,7 +194,7 @@ class ChecklistItemController extends Controller implements HasMiddleware
             ]);
         } else {
             $getIdItem = $checklistItem->check_list_id;
-            $checklist = Checklist::where('id', $getIdItem)->select('user_id')->get();
+            $checklist = CheckList::where('id', $getIdItem)->select('user_id')->get();
     
             // jika data dimiliki user
             if ($checklist[0]->user_id == Auth::user()->id){
@@ -208,7 +208,7 @@ class ChecklistItemController extends Controller implements HasMiddleware
                 }
     
                 // update
-                $getItem = ChecklistItem::find($itemId)->update([
+                $getItem = CheckListItem::find($itemId)->update([
                     'itemName' => request('itemName'),
                 ]);
     

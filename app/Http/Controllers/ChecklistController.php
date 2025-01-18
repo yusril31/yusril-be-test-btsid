@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Checklist;
-use App\Models\ChecklistItem;
+use App\Models\CheckList;
+use App\Models\CheckListItem;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Validator;
@@ -27,7 +27,7 @@ class ChecklistController extends Controller implements HasMiddleware
     public function getChecklist()
     {
         // get
-        $checklist = Checklist::with('checklistItems')->where('user_id', Auth::user()->id)->get();
+        $checklist = CheckList::with('checklistItems')->where('user_id', Auth::user()->id)->get();
         return response()->json([
             $checklist
         ]);
@@ -44,7 +44,7 @@ class ChecklistController extends Controller implements HasMiddleware
             return response()->json($validator->messages());
         }
 
-        $checklist = Checklist::create([
+        $checklist = CheckList::create([
             'name'      => request('name'),
             'user_id'   => Auth::user()->id
         ]);
@@ -63,7 +63,7 @@ class ChecklistController extends Controller implements HasMiddleware
     public function deleteChecklist($id)
     {
         // cek user_id
-        $checklist = Checklist::where('id', $id)->select('user_id')->first();
+        $checklist = CheckList::where('id', $id)->select('user_id')->first();
 
         // jika data kosong
         if (!$checklist) {
@@ -73,7 +73,7 @@ class ChecklistController extends Controller implements HasMiddleware
         } else {
             // jika data dimiliki user
             if ($checklist->user_id == Auth::user()->id){
-                Checklist::destroy($id);
+                CheckList::destroy($id);
                 return response()->json([
                     'message' => 'data berhasil dihapus'
                 ]);

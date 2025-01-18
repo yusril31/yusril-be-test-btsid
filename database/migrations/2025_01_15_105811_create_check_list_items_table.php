@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Checklist;
+use App\Models\CheckList;
 
 return new class extends Migration
 {
@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('check_list_items', function (Blueprint $table) {
             $table->id();
             $table->string('itemName');
-            $table->foreignIdFor(Checklist::class);
+            $table->foreignIdFor(CheckList::class);
             $table->tinyInteger('status');
             $table->timestamps();
         });

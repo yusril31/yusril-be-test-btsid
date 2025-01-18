@@ -12,6 +12,6 @@ class CheckListItem extends Model
 
     public function checklists()
     {
-        return $this->belongsTo(Checklist::class);
+        return $this->belongsTo(CheckList::class);
     }
 }

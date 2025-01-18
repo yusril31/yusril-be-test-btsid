@@ -12,7 +12,7 @@ class CheckList extends Model
 
     public function checklistItems()
     {
-        return $this->hasMany(ChecklistItem::class);
+        return $this->hasMany(CheckListItem::class);
     }
 
     public function users()
